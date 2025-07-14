@@ -105,6 +105,75 @@ $(document).ready(function() {
         renderFavorites();
     });
 
+    // Modal logic
+    function showModal(contentHtml) {
+        $('#modal-body').html(contentHtml);
+        $('#modal-overlay').fadeIn(150).css('display', 'flex');
+        setTimeout(function() { $('#modal-close').focus(); }, 100);
+    }
+    function hideModal() {
+        $('#modal-overlay').fadeOut(120);
+    }
+    $('#modal-close, #modal-overlay').on('click', function(e) {
+        if (e.target === this) hideModal();
+    });
+    // Keyboard accessibility: close modal with Escape key
+    $(document).on('keydown', function(e) {
+        if ($('#modal-overlay').is(':visible') && (e.key === 'Escape' || e.keyCode === 27)) {
+            hideModal();
+        }
+    });
+
+    // Show more details on card click
+    $('#results-list').on('click', '.result-card', function(e) {
+        // Prevent modal opening when clicking favorite button
+        if ($(e.target).hasClass('fav-btn')) return;
+        const idx = $(this).index();
+        const item = lastResults[idx];
+        let html = '';
+        if (currentType === 'movie') {
+            // Show loading in modal
+            showModal('<div class="loading">Loading details...</div>');
+            // Fetch full details from OMDb
+            const apiKey = 'thewdb';
+            $.ajax({
+                url: `https://www.omdbapi.com/?apikey=${apiKey}&i=${item.imdbID}&plot=full`,
+                method: 'GET',
+                success: function(data) {
+                    if (data.Response === 'True') {
+                        html = `<h2>${data.Title}</h2>
+                            <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/150x220?text=No+Image'}" alt="${data.Title}" style="width:120px;height:180px;object-fit:cover;border-radius:6px;box-shadow:0 1px 6px #0001;margin-bottom:10px;">
+                            <p><strong>Year:</strong> ${data.Year}</p>
+                            <p><strong>Rated:</strong> ${data.Rated}</p>
+                            <p><strong>Released:</strong> ${data.Released}</p>
+                            <p><strong>Genre:</strong> ${data.Genre}</p>
+                            <p><strong>Director:</strong> ${data.Director}</p>
+                            <p><strong>Actors:</strong> ${data.Actors}</p>
+                            <p><strong>Plot:</strong> ${data.Plot}</p>
+                            <p><strong>IMDB Rating:</strong> ${data.imdbRating}</p>
+                            <p><strong>IMDB ID:</strong> ${data.imdbID}</p>`;
+                    } else {
+                        html = `<div class='error'>Could not fetch details. Please try again later.</div>`;
+                    }
+                    showModal(html);
+                },
+                error: function() {
+                    showModal('<div class="error">Error fetching details. Please try again later.</div>');
+                }
+            });
+        } else {
+            const v = item.volumeInfo;
+            html = `<h2>${v.title}</h2>
+                <img src="${v.imageLinks && v.imageLinks.thumbnail ? v.imageLinks.thumbnail : 'https://via.placeholder.com/150x220?text=No+Image'}" alt="${v.title}" style="width:120px;height:180px;object-fit:cover;border-radius:6px;box-shadow:0 1px 6px #0001;margin-bottom:10px;">
+                <p><strong>Authors:</strong> ${(v.authors || []).join(', ')}</p>
+                <p><strong>Published:</strong> ${v.publishedDate || 'N/A'}</p>
+                <p><strong>Publisher:</strong> ${v.publisher || 'N/A'}</p>
+                <p><strong>Page Count:</strong> ${v.pageCount || 'N/A'}</p>
+                <p><strong>Description:</strong> ${v.description ? v.description.substring(0, 400) + (v.description.length > 400 ? '...' : '') : 'N/A'}</p>`;
+            showModal(html);
+        }
+    });
+
     function startSearch() {
         currentQuery = $('#search-input').val().trim();
         currentType = $('#search-type').val();
@@ -230,6 +299,50 @@ $(document).ready(function() {
             $('#favorites-list').append(html);
         });
     }
+
+    // Hide the Load More button (infinite scroll replaces it)
+    $('#load-more-btn').hide();
+
+    // Infinite scroll logic
+    let canLoadMore = true;
+    $('#results-section').on('scroll', function() {
+        const $this = $(this);
+        if (!canLoadMore || isLoading) return;
+        // Check if near bottom (within 120px)
+        if ($this[0].scrollHeight - $this.scrollTop() - $this.outerHeight() < 120) {
+            // Only load if more results are available
+            if ((currentType === 'movie' && lastResults.length % 10 === 0) || (currentType === 'book' && lastResults.length % 20 === 0)) {
+                canLoadMore = false;
+                if (currentType === 'movie') {
+                    currentPage++;
+                } else {
+                    googleBooksStartIndex += 20;
+                }
+                search(currentQuery, currentType, true);
+                setTimeout(() => { canLoadMore = true; }, 800); // debounce
+            }
+        }
+    });
+
+    // Also trigger infinite scroll on window scroll for mobile/small screens
+    $(window).on('scroll', function() {
+        if (!$('#results-section').is(':visible')) return;
+        if (!canLoadMore || isLoading) return;
+        const $results = $('#results-section');
+        const rect = $results[0].getBoundingClientRect();
+        if (rect.bottom - window.innerHeight < 120) {
+            if ((currentType === 'movie' && lastResults.length % 10 === 0) || (currentType === 'book' && lastResults.length % 20 === 0)) {
+                canLoadMore = false;
+                if (currentType === 'movie') {
+                    currentPage++;
+                } else {
+                    googleBooksStartIndex += 20;
+                }
+                search(currentQuery, currentType, true);
+                setTimeout(() => { canLoadMore = true; }, 800);
+            }
+        }
+    });
 
     // Initial render of favorites
     renderFavorites();

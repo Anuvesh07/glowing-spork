@@ -91,6 +91,156 @@ main {
     flex-direction: column;
     gap: 10px;
 }
+
+/* Result Card Enhancements */
+.result-card {
+    background: #f8fafd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.18s, box-shadow 0.18s;
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 10px;
+}
+.result-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.13);
+    background: #eaf3fb;
+}
+.result-card .cover {
+    width: 100%;
+    max-width: 150px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.result-card .info {
+    padding: 0 10px;
+    text-align: center;
+}
+.result-card h3 {
+    margin: 8px 0 4px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a2a3a;
+}
+.result-card p {
+    margin: 2px 0;
+    font-size: 0.97rem;
+    color: #4a5a6a;
+}
+.fav-btn {
+    margin-top: 8px;
+    padding: 6px 14px;
+    border-radius: 5px;
+    border: none;
+    background: #f0f4fa;
+    color: #0078d7;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.fav-btn.active, .fav-btn:hover {
+    background: #0078d7;
+    color: #fff;
+}
+
+/* Favorites Card Enhancements */
+.fav-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border-radius: 7px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    transition: box-shadow 0.18s;
+    position: relative;
+}
+.fav-card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,0.13);
+    background: #f0f7ff;
+}
+.fav-cover {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.fav-info h4 {
+    margin: 0 0 2px 0;
+    font-size: 1rem;
+    color: #1a2a3a;
+}
+.fav-info p {
+    margin: 0 0 2px 0;
+    font-size: 0.93rem;
+    color: #4a5a6a;
+}
+.remove-fav-btn {
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    background: #fbeaea;
+    color: #d7263d;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+}
+.remove-fav-btn:hover {
+    background: #d7263d;
+    color: #fff;
+}
+
+/* Modal Overlay (for details, to be implemented in JS) */
+#modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(30,40,60,0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+#modal-content {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    padding: 30px 24px;
+    max-width: 400px;
+    width: 90vw;
+    position: relative;
+    animation: modalIn 0.22s cubic-bezier(.4,1.4,.6,1) both;
+}
+@keyframes modalIn {
+    from { transform: translateY(40px) scale(0.95); opacity: 0; }
+    to { transform: none; opacity: 1; }
+}
+#modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.18s;
+}
+#modal-close:hover {
+    color: #d7263d;
+}
+
 @media (max-width: 900px) {
     main {
         flex-direction: column;
