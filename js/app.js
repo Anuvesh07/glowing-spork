@@ -242,14 +242,59 @@ $(document).ready(function() {
         }
     }
 
-    // Render results using jQuery templating
+    // Sort/filter controls event handlers
+    $('#sort-select, #filter-covers').on('change', function() {
+        renderResults(lastResults, currentType);
+    });
+
+    // Helper: get sorted/filtered items
+    function getSortedFilteredItems(items, type) {
+        let filtered = items.slice();
+        // Filter: only with covers
+        if ($('#filter-covers').is(':checked')) {
+            if (type === 'movie') {
+                filtered = filtered.filter(item => item.Poster && item.Poster !== 'N/A');
+            } else {
+                filtered = filtered.filter(item => item.volumeInfo && item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail);
+            }
+        }
+        // Sort
+        const sortVal = $('#sort-select').val();
+        if (sortVal === 'az') {
+            filtered.sort((a, b) => {
+                const tA = type === 'movie' ? a.Title : (a.volumeInfo.title || '');
+                const tB = type === 'movie' ? b.Title : (b.volumeInfo.title || '');
+                return tA.localeCompare(tB);
+            });
+        } else if (sortVal === 'year-new') {
+            filtered.sort((a, b) => {
+                const yA = type === 'movie' ? parseInt(a.Year) : parseInt((a.volumeInfo.publishedDate || '').slice(0,4));
+                const yB = type === 'movie' ? parseInt(b.Year) : parseInt((b.volumeInfo.publishedDate || '').slice(0,4));
+                return (yB || 0) - (yA || 0);
+            });
+        } else if (sortVal === 'year-old') {
+            filtered.sort((a, b) => {
+                const yA = type === 'movie' ? parseInt(a.Year) : parseInt((a.volumeInfo.publishedDate || '').slice(0,4));
+                const yB = type === 'movie' ? parseInt(b.Year) : parseInt((b.volumeInfo.publishedDate || '').slice(0,4));
+                return (yA || 0) - (yB || 0);
+            });
+        }
+        return filtered;
+    }
+
+    // Update renderResults to use getSortedFilteredItems
     function renderResults(items, type) {
         $('#results-list').empty();
         if (!items || items.length === 0) {
             $('#results-list').html('<div class="no-results">No results found.</div>');
             return;
         }
-        items.forEach(function(item) {
+        const sortedFiltered = getSortedFilteredItems(items, type);
+        if (!sortedFiltered.length) {
+            $('#results-list').html('<div class="no-results">No results match your filter.</div>');
+            return;
+        }
+        sortedFiltered.forEach(function(item) {
             let html = '';
             let isFav = false;
             if (type === 'movie') {
@@ -346,4 +391,16 @@ $(document).ready(function() {
 
     // Initial render of favorites
     renderFavorites();
+
+    // Export favorites as JSON
+    $('#export-favorites-btn').on('click', function() {
+        const favs = getFavorites();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(favs, null, 2));
+        const dlAnchor = document.createElement('a');
+        dlAnchor.setAttribute('href', dataStr);
+        dlAnchor.setAttribute('download', 'favorites.json');
+        document.body.appendChild(dlAnchor);
+        dlAnchor.click();
+        document.body.removeChild(dlAnchor);
+    });
 }); 

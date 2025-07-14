@@ -24,12 +24,24 @@
         <main>
             <section id="results-section">
                 <h2>Results</h2>
+                <div id="sort-filter-bar" style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select">
+                        <option value="az">Title (A-Z)</option>
+                        <option value="year-new">Year (Newest)</option>
+                        <option value="year-old">Year (Oldest)</option>
+                    </select>
+                    <label style="display:flex;align-items:center;gap:4px;">
+                        <input type="checkbox" id="filter-covers"> Only with covers
+                    </label>
+                </div>
                 <div id="results-list"></div>
                 <button id="load-more-btn" style="display:none;">Load More</button>
             </section>
             <aside id="favorites-section">
                 <h2>Favorites</h2>
                 <div id="favorites-list"></div>
+                <button id="export-favorites-btn" style="margin-top:12px;width:100%;">Export Favorites</button>
             </aside>
         </main>
     </div>
