@@ -403,4 +403,26 @@ $(document).ready(function() {
         dlAnchor.click();
         document.body.removeChild(dlAnchor);
     });
+
+    // Dark mode toggle logic
+    function setDarkMode(on) {
+        if (on) {
+            $('body').addClass('dark-mode');
+            $('#dark-mode-toggle').text('☀️ Light Mode');
+            localStorage.setItem('darkMode', 'on');
+        } else {
+            $('body').removeClass('dark-mode');
+            $('#dark-mode-toggle').text('🌙 Dark Mode');
+            localStorage.setItem('darkMode', 'off');
+        }
+    }
+    $('#dark-mode-toggle').on('click', function() {
+        setDarkMode(!$('body').hasClass('dark-mode'));
+    });
+    // On page load, apply saved preference
+    if (localStorage.getItem('darkMode') === 'on') {
+        setDarkMode(true);
+    } else {
+        setDarkMode(false);
+    }
 }); 

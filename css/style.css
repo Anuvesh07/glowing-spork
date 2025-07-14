@@ -241,6 +241,85 @@ main {
     color: #d7263d;
 }
 
+body.dark-mode {
+    background: #181c24;
+    color: #e3e6ee;
+    transition: background 0.3s, color 0.3s;
+}
+.dark-mode .container {
+    background: #232837;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.22);
+}
+.dark-mode header,
+.dark-mode .search-controls {
+    background: none;
+}
+.dark-mode #results-section {
+    background: none;
+}
+.dark-mode #favorites-section {
+    background: #232837;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.18);
+}
+.dark-mode .result-card {
+    background: #232837;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+}
+.dark-mode .result-card:hover {
+    background: #2d3347;
+}
+.dark-mode .result-card h3,
+.dark-mode .fav-info h4 {
+    color: #e3e6ee;
+}
+.dark-mode .result-card p,
+.dark-mode .fav-info p {
+    color: #b6b9c7;
+}
+.dark-mode .fav-card {
+    background: #232837;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.18);
+}
+.dark-mode .fav-card:hover {
+    background: #2d3347;
+}
+.dark-mode .fav-btn {
+    background: #232837;
+    color: #7db7ff;
+    border: 1px solid #2d3347;
+}
+.dark-mode .fav-btn.active, .dark-mode .fav-btn:hover {
+    background: #0078d7;
+    color: #fff;
+}
+.dark-mode .remove-fav-btn {
+    background: #2d3347;
+    color: #ff7d7d;
+}
+.dark-mode .remove-fav-btn:hover {
+    background: #d7263d;
+    color: #fff;
+}
+.dark-mode #modal-content {
+    background: #232837;
+    color: #e3e6ee;
+}
+.dark-mode #modal-close {
+    color: #b6b9c7;
+}
+.dark-mode #modal-close:hover {
+    color: #ff7d7d;
+}
+.dark-mode select,
+.dark-mode input[type="text"] {
+    background: #232837;
+    color: #e3e6ee;
+    border: 1px solid #2d3347;
+}
+.dark-mode #sort-filter-bar label {
+    color: #b6b9c7;
+}
+
 @media (max-width: 900px) {
     main {
         flex-direction: column;
