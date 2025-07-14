@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie & Book Search App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Movie & Book Search</h1>
+            <div class="search-controls">
+                <input type="text" id="search-input" placeholder="Search for movies or books...">
+                <select id="search-type">
+                    <option value="movie">Movies</option>
+                    <option value="book">Books</option>
+                </select>
+                <button id="search-btn">Search</button>
+            </div>
+        </header>
+        <main>
+            <section id="results-section">
+                <h2>Results</h2>
+                <div id="results-list"></div>
+                <button id="load-more-btn" style="display:none;">Load More</button>
+            </section>
+            <aside id="favorites-section">
+                <h2>Favorites</h2>
+                <div id="favorites-list"></div>
+            </aside>
+        </main>
+    </div>
+</body>
+</html> 
