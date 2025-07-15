@@ -4,52 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie & Book Search App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/app.js" defer></script>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="live-bg" aria-hidden="true"></div>
     <div class="container">
         <header>
             <h1>Movie & Book Search</h1>
-            <div class="search-controls">
-                <input type="text" id="search-input" placeholder="Search for movies or books...">
-                <select id="search-type">
+            <div class="search-controls" role="search" aria-label="Search Controls">
+                <input type="text" id="search-input" placeholder="Search for movies or books..." aria-label="Search input">
+                <select id="search-type" aria-label="Search type">
                     <option value="movie">Movies</option>
                     <option value="book">Books</option>
                 </select>
-                <button id="search-btn">Search</button>
-                <button id="dark-mode-toggle" style="margin-left:16px;">🌙 Dark Mode</button>
+                <button id="search-btn" aria-label="Search">Search</button>
+                <button id="dark-mode-toggle" style="margin-left:16px;" aria-label="Toggle dark mode" title="Toggle dark mode">🌙 Dark Mode</button>
             </div>
         </header>
-        <main>
-            <section id="results-section">
+        <main id="main-content" aria-label="Main content">
+            <section id="results-section" aria-label="Results">
                 <h2>Results</h2>
                 <div id="sort-filter-bar" style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
                     <label for="sort-select">Sort by:</label>
-                    <select id="sort-select">
+                    <select id="sort-select" aria-label="Sort results">
                         <option value="az">Title (A-Z)</option>
                         <option value="year-new">Year (Newest)</option>
                         <option value="year-old">Year (Oldest)</option>
                     </select>
                     <label style="display:flex;align-items:center;gap:4px;">
-                        <input type="checkbox" id="filter-covers"> Only with covers
+                        <input type="checkbox" id="filter-covers" aria-label="Only show results with covers"> Only with covers
                     </label>
+                    <select id="filter-type" style="display:none;" aria-label="Filter by type">
+                        <option value="">All Types</option>
+                        <option value="movie">Movie</option>
+                        <option value="series">Series</option>
+                        <option value="episode">Episode</option>
+                    </select>
+                    <input type="text" id="filter-author" placeholder="Filter by author..." style="display:none;max-width:160px;" aria-label="Filter by author">
                 </div>
-                <div id="results-list"></div>
-                <button id="load-more-btn" style="display:none;">Load More</button>
+                <div id="results-list" aria-live="polite"></div>
+                <button id="load-more-btn" style="display:none;" aria-label="Load more results" title="Load more results">Load More</button>
             </section>
-            <aside id="favorites-section">
+            <aside id="favorites-section" aria-label="Favorites">
                 <h2>Favorites</h2>
-                <div id="favorites-list"></div>
-                <button id="export-favorites-btn" style="margin-top:12px;width:100%;">Export Favorites</button>
+                <div id="favorites-list" aria-live="polite"></div>
+                <button id="export-favorites-btn" style="margin-top:12px;width:100%;" aria-label="Export favorites" title="Export your favorites as a file">Export Favorites</button>
+                <label for="import-favorites-input" style="margin-top:12px;width:100%;display:block;cursor:pointer;">
+                    <span style="display:inline-block;margin-bottom:4px;">Import Favorites</span>
+                    <input type="file" id="import-favorites-input" accept="application/json" style="display:none;">
+                </label>
+                <div id="import-status" aria-live="polite" style="margin-top:8px;font-size:0.97em;"></div>
             </aside>
         </main>
     </div>
     <!-- Modal for details -->
-    <div id="modal-overlay">
+    <div id="modal-overlay" class="modal-blur-bg" aria-modal="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-body">
         <div id="modal-content">
-            <button id="modal-close">&times;</button>
+            <button id="modal-close" aria-label="Close modal">&times;</button>
             <div id="modal-body"></div>
         </div>
     </div>
