@@ -1,3 +1,7 @@
+# jqueary
+
+**Live Demo:** [https://glowing-spork.netlify.app/](https://glowing-spork.netlify.app/)
+
 # Movie & Book Search App
 
 A creative, interactive web application to search for movies (using OMDb API) and books (using Google Books API), built with jQuery and a modern, accessible UI.
@@ -40,6 +44,16 @@ A creative, interactive web application to search for movies (using OMDb API) an
 - [OMDb API](http://www.omdbapi.com/)
 - [Google Books API](https://developers.google.com/books/)
 - [Gutendex API](https://gutendex.com/)
+
+## Deployment
+
+This site is deployed on Netlify: [https://glowing-spork.netlify.app/](https://glowing-spork.netlify.app/)
+
+To deploy your own version:
+1. Push your code to a Git repository (GitHub, GitLab, etc.).
+2. Connect your repository to Netlify.
+3. Set the publish directory to `jqueary`.
+4. No build command is required (static site).
 
 ---
 
