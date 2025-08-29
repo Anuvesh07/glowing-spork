@@ -28,3 +28,8 @@ Search movies (via OMDb) and books (via Google Books) in one spot, save the good
 HTML5 + CSS3, jQuery, OMDb API, Google Books API, Gutendex.
 
 That’s it—happy hunting!
+
+Additional factors : 
+
+1. thinking of adding guxtex api for free e books 
+
